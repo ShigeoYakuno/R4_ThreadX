@@ -150,9 +150,11 @@
    define is negated, thereby forcing the stack fill which is necessary for the stack checking
    logic.  */
 
-/*
+/* Enabled project-wide: the pulse_out.c GPT reconfigure hang turned out to correlate with call
+   depth (uart_cmd_thread's stack), so runtime stack checking is worth the small overhead to catch
+   any future overflow deterministically instead of silently corrupting memory. See
+   docs/architecture.md. */
 #define TX_ENABLE_STACK_CHECKING
-*/
 
 /* Determine if random number is used for stack filling. By default, ThreadX uses a fixed
    pattern for stack filling. When the following is defined, ThreadX uses a random number
