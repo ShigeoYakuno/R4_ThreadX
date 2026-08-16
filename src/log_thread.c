@@ -76,6 +76,10 @@ void log_thread_entry(ULONG thread_input)
 {
     (void) thread_input;
 
+    /* log_thread only starts running once tx_kernel_enter() has brought up the scheduler and
+     * created this thread, so reaching here confirms ThreadX itself finished initializing. */
+    log_printf("ThreadX initialization complete\r\n");
+
     while (1)
     {
         tx_thread_sleep(LOG_FLUSH_PERIOD_TICKS);
