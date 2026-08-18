@@ -55,8 +55,10 @@ static void pulse_dbg(const char * fmt, ...)
  * unreliable (see docs/architecture.md) no matter how much settling delay was added around it, so
  * that reconfigure path is avoided entirely now: period changes only ever call R_GPT_PeriodSet(),
  * which is documented as safe to call whether the timer is running or stopped. */
-#define PULSE_OUT_SOURCE_DIV       TIMER_SOURCE_DIV_16
-#define PULSE_OUT_SOURCE_DIV_VALUE 16UL
+//#define PULSE_OUT_SOURCE_DIV       TIMER_SOURCE_DIV_16
+//#define PULSE_OUT_SOURCE_DIV_VALUE 16UL
+#define PULSE_OUT_SOURCE_DIV       TIMER_SOURCE_DIV_1
+#define PULSE_OUT_SOURCE_DIV_VALUE 1UL
 
 static gpt_instance_ctrl_t g_pulse_ctrl;
 static bool                g_pulse_opened; /* true once pulse_out_init() has opened GPT6 */

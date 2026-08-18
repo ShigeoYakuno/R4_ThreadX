@@ -10,4 +10,6 @@ void trigger_out_init(void);
 /* Drives D13 high (on) or low (off). Plain GPIO write, safe to call from any thread. */
 void trigger_out_set(bool on);
 
+void trigger_out_shot(void);
+
 #endif /* TRIGGER_OUT_H_ */

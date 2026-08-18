@@ -5,8 +5,10 @@
 #include <stdint.h>
 
 /* Bounds on the period pulse_out_set_period_ns() accepts. */
-#define PULSE_OUT_PERIOD_NS_MIN 1000UL     /* 1us */
-#define PULSE_OUT_PERIOD_NS_MAX 10000000UL /* 10ms */
+//#define PULSE_OUT_PERIOD_NS_MIN 1000UL     /* 1us */
+//#define PULSE_OUT_PERIOD_NS_MAX 10000000UL /* 10ms */
+#define PULSE_OUT_PERIOD_NS_MIN 2000U
+#define PULSE_OUT_PERIOD_NS_MAX 20000U
 
 /* Switches D12 (GTIOC6B) to GPT's alternate function. Does NOT open GPT6 itself -- that happens
  * lazily, inside the first pulse_out_set_period_ns() call, using the real requested period (see

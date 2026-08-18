@@ -23,17 +23,33 @@ static bool parse_pulse_period_ns(const char * arg, uint32_t * out_ns)
 
     if (end == arg)
     {
-        return false; /* no digits at all */
+        return false;
+    }
+
+    if (0 == strcasecmp(end, "ns"))
+    {
+        *out_ns = (uint32_t) value;
+        return true;
     }
 
     if (0 == strcasecmp(end, "us"))
     {
+        if (value > (UINT32_MAX / 1000UL))
+        {
+            return false;
+        }
+
         *out_ns = (uint32_t) (value * 1000UL);
         return true;
     }
 
     if (0 == strcasecmp(end, "ms"))
     {
+        if (value > (UINT32_MAX / 1000000UL))
+        {
+            return false;
+        }
+
         *out_ns = (uint32_t) (value * 1000000UL);
         return true;
     }
@@ -57,7 +73,7 @@ static void handle_pulse_command(const char * arg)
     }
     else
     {
-        log_printf("ERR: usage: pulse <n>us|<n>ms (1us-10ms) | pulse off\r\n");
+        log_printf("ERR: usage: pulse <n>us|<n>ms (2us-20us) | pulse off\r\n");
     }
 }
 
@@ -96,6 +112,11 @@ static void handle_command(const char * line)
     {
         handle_pulse_command(line + 6);
     }
+    else if (0 == strcasecmp(line, "trg shot"))
+    {
+        trigger_out_shot();
+        log_printf("OK: trg=shot (Low 10us -> High)\r\n");
+    }
     else if (0 == strcasecmp(line, "trg on"))
     {
         trigger_out_set(true);
@@ -108,12 +129,13 @@ static void handle_command(const char * line)
     }
     else if (0 == strcasecmp(line, "trg"))
     {
-        log_printf("ERR: usage: trg on|off\r\n");
+        log_printf("ERR: usage: trg shot|on|off\r\n");
     }
     else if ((0 == strcasecmp(line, "help")) || (0 == strcmp(line, "?")))
     {
         log_printf("commands: led1=heart led2=diamond led3=triangle led4=square "
-                    "pulse=<n>us|<n>ms|off (D12) trg=on|off (D13) help/?\r\n");
+                "pulse <n>ns|<n>us|off (D12) "
+                "trg shot|on|off (D13) help/?\r\n");
     }
     else
     {
